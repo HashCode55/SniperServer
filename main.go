@@ -14,6 +14,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
@@ -89,7 +90,7 @@ func main() {
 	router.HandleFunc("/pull", PullSnippet).Methods("POST")
 	router.HandleFunc("/signup", SignUpEndPoint).Methods("POST")
 	router.HandleFunc("/signin", SignInEndPoint).Methods("POST")
-	log.Fatal(http.ListenAndServe(":12345", router))
+	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), router))
 }
 
 func SignUpEndPoint(w http.ResponseWriter, req *http.Request) {
