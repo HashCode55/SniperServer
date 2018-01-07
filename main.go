@@ -121,7 +121,7 @@ func SignUpEndPoint(w http.ResponseWriter, req *http.Request) {
 
 	log.Println("Received a signup request.")
 
-	u := session.DB("sniper").C("sniper-users")
+	u := session.DB("sniperprod").C("sniper-users")
 
 	var OldUser User
 	err := u.Find(bson.M{"user": user.User}).One(&OldUser)
@@ -153,7 +153,7 @@ func SignInEndPoint(w http.ResponseWriter, req *http.Request) {
 
 	log.Println("Received a signin request.")
 
-	u := session.DB("sniper").C("sniper-users")
+	u := session.DB("sniperprod").C("sniper-users")
 
 	var OldUser User
 	err := u.Find(bson.M{"user": user.User}).One(&OldUser)
@@ -236,7 +236,7 @@ func PushAllEndPoint(w http.ResponseWriter, req *http.Request) {
 
 func PushSnippetHelper(data Data, user User) Response {
 	// this'll be called only if authentication token is valid
-	c := session.DB("sniper").C("sniper-snippets")
+	c := session.DB("sniperprod").C("sniper-snippets")
 	//check if there is a snippet for the same name and user
 	var oldData Snippet
 	err := c.Find(bson.M{"name": data.Name, "user": data.User}).One(&oldData)
@@ -312,7 +312,7 @@ func PullSnippet(w http.ResponseWriter, req *http.Request) {
 		log.Println("[DEBUG] Data: ", data)
 	}
 
-	c := session.DB("sniper").C("sniper-snippets")
+	c := session.DB("sniperprod").C("sniper-snippets")
 
 	var snippet Snippet
 	err := c.Find(bson.M{"name": data.Name, "user": data.User}).One(&snippet)
@@ -356,7 +356,7 @@ func PullAllEndPoint(w http.ResponseWriter, req *http.Request) {
 	var data Data
 	_ = json.NewDecoder(req.Body).Decode(&data)
 
-	c := session.DB("sniper").C("sniper-snippets")
+	c := session.DB("sniperprod").C("sniper-snippets")
 
 	var snippets []Snippet
 	err := c.Find(bson.M{"user": data.User}).All(&snippets)
